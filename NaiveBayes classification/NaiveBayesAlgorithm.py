@@ -1,52 +1,56 @@
-# naive bayes 
-#testfile 
+# Importing essential Libraries for naivebayes algorithm 
 import pandas as pd
 import numpy as np
-import operator 
+from operator import itemgetter
 
 class MultinomialNaiveBayes():
 
-    def __init__(self, X, targets):
-        """does non-gaussian Naive Bayes classification on the inputted data.
-        
-        X = a numpy array of numerical values. The dimensions are (m x n), where
-            each row is a training example and each column is a feature. 
-        targets = a numpy array of numerical values. The associated targets with
-                    each training example in X, with size (m x 1). 
+    def __init__(self, Inputs, targets):
+        """
+            1.Get the train dataset
+            2.It is good if we already splitted x and y labels before creating instance of this class
+            3.In this example we already splitted x and y labels
+            4.Do the Preprocessing work using Pandas and numpy
+            5.Split the data into no of classifications available in dataset
+            6.Since we are using titanic.csv from kaggle we only have two predictions i.e; survived or not
+            7.1 means survived and 0 means not survived
+            8.Then after data cleaning we split the data to two sets i.e; survived set and not survived set
+            9.Apply the conditional probability for each feature in cleaned dataset
+            10.Record the conditional probabilities of each feature in dataset
+            11.Then apply baye's theorem and predict the outcomes of test dataset and compare then with original dataset
         """
 
-        # split into training examples for each class
-        self.classes = np.unique(targets).tolist()
-        self.amountOfClasses = len(self.classes)
-
-        self.n = np.shape(X)[1]
-        self.m = np.shape(X)[0]
+        # Get unique classifications that we get from data
+        self.classifications = np.unique(targets).tolist()
+        
+        # Total no of features
+        self.n = np.shape(Inputs)[1]
+        # Total no of samples
+        self.m = np.shape(Inputs)[0]
 
         # set small number epsilon to get rid of any zeros
         self.epsilon = 0.001
 
-        # merge X and targets for ease of indexing
-        A = np.concatenate([X, targets], axis=1)
+        # Merge Inputs and targets for ease of indexing
+        A = np.concatenate([Inputs, targets], axis=1)
 
-        # turn into a pandas df
+        # Turn np array to pandas dataframe
         df = pd.DataFrame(A)
 
+        # Make list of split datasets based on classifications
+        self.classifiers = {}
         
-
-        # make list of split datasets based on class
-        self.splitdata = {}
-        
-        for c in self.classes:
+        for c in self.classifications:
             x = df.loc[df[self.n] == c]
-            self.splitdata[c] = x
+            self.classifiers[c] = x
 
 
         self.allLikelihoods = {}
         self.allPriors = {}
 
-        for c in self.classes:
+        for c in self.classifications:
             # for each class, calculate the corresponding probabilities
-            X = self.splitdata[c]
+            X = self.classifiers[c]
             M = np.shape(X)[0]
             
             # calculate the class prior probability (out of all examps, what prob is the class?)
@@ -92,7 +96,7 @@ class MultinomialNaiveBayes():
 
         logits = {} 
         for ex in x:
-            for c in self.classes:
+            for c in self.classifications:
                 runningCondProbs = []
                 for feature in range(self.n):
                     currentConditionalProb = round(ex[feature]*self.allLikelihoods[c][feature], 4)
@@ -103,7 +107,7 @@ class MultinomialNaiveBayes():
                     
                 logits[c] = unnormalizedClassProb
             
-            assignedClass = max(logits.items(), key=operator.itemgetter(1))[0]
+            assignedClass = max(logits.items(), key=itemgetter(1))[0]
             exampleResults.append(assignedClass)
           
         

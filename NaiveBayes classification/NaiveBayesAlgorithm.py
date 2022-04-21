@@ -3,7 +3,9 @@ import pandas as pd
 import numpy as np
 from operator import itemgetter
 
-class MultinomialNaiveBayes():
+
+# Creating class for NaiveBayesAlgorithm..
+class NaiveBayesAlgorithm():
 
     def __init__(self, Inputs, targets):
         """
@@ -113,3 +115,60 @@ class MultinomialNaiveBayes():
         
         # return the exampleResults as a (examples, 1) size matrix
         return ((np.array(exampleResults).reshape((np.shape(x)[0], -1))))
+
+ 
+
+# LOAD TRAINING DATA =================================================================================
+
+df = pd.read_csv('train.csv')
+
+# Drop unnecessary columns 
+# I assume that these columns won't show any impacy on our predictions
+df = df.drop(['Name', 'PassengerId', 'SibSp', 'Parch', 'Ticket', 'Fare', 'Cabin', 'Embarked'], axis=1)
+
+# Turn male female into dummies and drop old male/female column 
+dummies = pd.get_dummies(df['Sex'])
+df = df.drop(['Sex'], axis=1)
+
+# Add dummies to dataframe
+df= pd.concat([df, dummies], axis=1)
+
+# Seperate Targets from inputs
+y = df['Survived']
+df = df.drop(['Survived'], axis=1)
+
+# Fill any NaN values with the mean of the each respected column
+df = df.fillna(df.mean())
+
+# convert both to numpy arrays to pass to MultnomialNaiveBayes
+A = df.values
+y = y.values.reshape((df.shape[0],1))
+
+
+
+
+# LOAD TEST DATA =======================================================================================
+df2 = pd.read_csv('test.csv')
+passengerNos = df2['PassengerId']
+
+# Drop unnecessary columns like we did before in train data
+df2 = df2.drop(['Name', 'PassengerId', 'SibSp', 'Parch', 'Ticket', 'Fare', 'Cabin', 'Embarked'], axis=1)
+
+# Turn male female into dummies and drop old male/female column 
+dummies = pd.get_dummies(df2['Sex'])
+df2 = df2.drop(['Sex'], axis=1)
+
+# Add dummies to dataframe
+df2 = pd.concat([df2, dummies], axis=1)
+X = df2.to_numpy()
+
+
+# IMPLEMENT NAIVE BAYES ================================================================================
+
+# Pass Training data into NaiveBayesAlgorithm
+MNB = NaiveBayesAlgorithm(A, y)
+
+
+
+# Fit new examples (test set)
+yhat = MNB.fit(X)

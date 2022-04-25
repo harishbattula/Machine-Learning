@@ -1,0 +1,265 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "26c21bce",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# importing numpy library\n",
+    "import numpy as np"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "id": "aee1c8e0",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Creating Support Vector Classifier\n",
+    "\n",
+    "class SVM_classifier():\n",
+    "\n",
+    "\n",
+    "  # initiating the hyperparameters\n",
+    "  def __init__(self, learning_rate, no_of_iterations, lambda_parameter):\n",
+    "\n",
+    "    self.learning_rate = learning_rate\n",
+    "    self.no_of_iterations = no_of_iterations\n",
+    "    self.lambda_parameter = lambda_parameter\n",
+    "\n",
+    "\n",
+    "  \n",
+    "  # fitting the dataset to SVM Classifier\n",
+    "  def fit(self, X, Y):\n",
+    "\n",
+    "    # m  --> number of Data points --> number of rows\n",
+    "    # n  --> number of input features --> number of columns\n",
+    "    self.m, self.n = X.shape\n",
+    "\n",
+    "    # initiating the weight value and bias value\n",
+    "\n",
+    "    self.w = np.zeros((self.n,1))\n",
+    "\n",
+    "    self.b = 0\n",
+    "\n",
+    "    self.X = X\n",
+    "\n",
+    "    self.Y = Y\n",
+    "\n",
+    "    # implementing Gradient Descent algorithm for Optimization\n",
+    "\n",
+    "    for i in range(self.no_of_iterations):\n",
+    "      self.update_weights()\n",
+    "\n",
+    "    return self.w,self.b\n",
+    "\n",
+    "  # function for updating the weight and bias value\n",
+    "  def update_weights(self):\n",
+    "\n",
+    "    # label encoding\n",
+    "    # Encoding all negative values to -1 and all positive values to 1\n",
+    "    y_label = np.where(self.Y <= 0, -1, 1)\n",
+    "\n",
+    "\n",
+    "    # gradients ( dw, db)\n",
+    "    for index, x_i in enumerate(self.X):\n",
+    "\n",
+    "      condition = y_label[index] * (np.dot(x_i, self.w) - self.b) >= 1\n",
+    "\n",
+    "      if (condition.all() == True):\n",
+    "\n",
+    "        dw = 2 * self.lambda_parameter * self.w\n",
+    "        db = 0\n",
+    "\n",
+    "      else:\n",
+    "        \n",
+    "        dw = 2 * self.lambda_parameter * self.w - np.dot(x_i.T.reshape(-1,1), y_label[index].reshape((1,1)))\n",
+    "        \n",
+    "        db = y_label[index]\n",
+    "\n",
+    "\n",
+    "      self.w = self.w - self.learning_rate * dw\n",
+    "\n",
+    "      self.b = self.b - self.learning_rate * db\n",
+    "\n",
+    "\n",
+    "\n",
+    "  # predict the label for a given input value\n",
+    "  def predict(self, X):\n",
+    "\n",
+    "    output = np.dot(X, self.w) - self.b\n",
+    "    \n",
+    "    predicted_labels = np.sign(output)\n",
+    "\n",
+    "    y_hat = np.where(predicted_labels <= -1, 0, 1)\n",
+    "\n",
+    "    return y_hat"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "id": "b1cb5bb9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "TrainData=np.loadtxt(\"TrainDataForDiabetes.csv\",delimiter=\",\",skiprows=1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "id": "1b6088a3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "TestData=np.loadtxt(\"TestDataForDiabetes.csv\",delimiter=\",\",skiprows=1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "id": "8a5c35a4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "XTrain=TrainData[:, :-1]\n",
+    "YTrain=TrainData[:, -1].reshape((-1,1))\n",
+    "XTest=TestData[:, :-1]\n",
+    "YTest=TestData[:, -1].reshape((-1,1))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 43,
+   "id": "bf2d879e",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(80, 8)\n",
+      "(80, 1)\n",
+      "(20, 8)\n",
+      "(20, 1)\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(XTrain.shape)\n",
+    "print(YTrain.shape)\n",
+    "print(XTest.shape)\n",
+    "print(YTest.shape)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 44,
+   "id": "2e19bfb8",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "model=SVM_classifier(0.001,1000,0.01)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 49,
+   "id": "efcb96f7",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(array([[ 1.04944702],\n",
+       "        [-0.0368152 ],\n",
+       "        [-0.29125526],\n",
+       "        [ 0.1539854 ],\n",
+       "        [-0.11506687],\n",
+       "        [ 0.20613476],\n",
+       "        [ 1.03607757],\n",
+       "        [ 0.12804588]]),\n",
+       " array([2.935]))"
+      ]
+     },
+     "execution_count": 49,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "model.fit(XTrain,YTrain)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 65,
+   "id": "5a533598",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[0],\n",
+       "       [0],\n",
+       "       [0],\n",
+       "       [0],\n",
+       "       [0],\n",
+       "       [0],\n",
+       "       [1],\n",
+       "       [0],\n",
+       "       [0],\n",
+       "       [0],\n",
+       "       [0],\n",
+       "       [0],\n",
+       "       [0],\n",
+       "       [0],\n",
+       "       [0],\n",
+       "       [0],\n",
+       "       [0],\n",
+       "       [0],\n",
+       "       [0],\n",
+       "       [0]])"
+      ]
+     },
+     "execution_count": 65,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "OurPredictionsOnTestDataSet=model.predict(XTest)\n",
+    "OurPredictionsOnTestDataSet"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

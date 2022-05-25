@@ -18,9 +18,7 @@
       6. Google Translation
       7. ChatBot and many more.....
   
-### Machine learning is also often referred to as predictive analytics, or predictive modelling.machine learning uses programmed algorithms that receive and analyse 
-input data to predict output values within an acceptable range. 
-As new data is fed to these algorithms, they learn and optimise their operations to improve performance, developing ‘intelligence’ over time.
+### Machine learning is also often referred to as predictive analytics, or predictive modelling.machine learning uses programmed algorithms that receive and analyse input data to predict output values within an acceptable range. As new data is fed to these algorithms, they learn and optimise their operations to improve performance, developing ‘intelligence’ over time.
 ## Types of Approaches in ML :
   1. Supervised Machine Learning.
   2. Un Supervised Machine Learning.

@@ -2,13 +2,8 @@
 <snippet>
   <content><![CDATA[
 
-# ML from scratch repository
 ## About Machine Learning :
-  ### Machine learning is a branch of artificial intelligence (AI) and computer 
-  science which focuses on the use of data and algorithms to imitate the way that humans learn, gradually improving its accuracy.
-  Machine Learning technology has widely changed the lifestyle of a human beings as we are highly dependent on this technology. 
-  It is the subset of Artificial Intelligence, and we all are using this either knowingly or unknowingly. For example, we use Google Assistant 
-  that employs ML concepts, we take help from online customer support, which is also an example of machine learning, and many more.
+### Machine learning is a branch of artificial intelligence (AI) and computer science which focuses on the use of data and algorithms to imitate the way that humans learn, gradually improving its accuracy. Machine Learning technology has widely changed the lifestyle of a human beings as we are highly dependent on this technology. It is the subset of Artificial Intelligence, and we all are using this either knowingly or unknowingly. For example, we use Google Assistant that employs ML concepts, we take help from online customer support, which is also an example of machine learning, and many more.
   #### Some of use cases of ML :
       1. Speech & Image Recognition
       2. Ads Recommendation
@@ -24,10 +19,7 @@
   2. Un Supervised Machine Learning.
   3. Reinforcement Learning.
 ## Supervised ML:
-  ### In supervised learning, the machine is taught by example. The operator provides the machine learning algorithm with a known dataset that includes desired inputs
-  and outputs, and the algorithm must find a method to determine how to arrive at those inputs and outputs. While the operator knows the correct answers to the problem,
-  the algorithm identifies patterns in data, learns from observations and makes predictions. The algorithm makes predictions and is corrected by the operator – and 
-  this process continues until the algorithm achieves a high level of accuracy/performance.
+  ### In supervised learning, the machine is taught by example. The operator provides the machine learning algorithm with a known dataset that includes desired inputs   and outputs, and the algorithm must find a method to determine how to arrive at those inputs and outputs. While the operator knows the correct answers to the          problem, the algorithm identifies patterns in data, learns from observations and makes predictions. The algorithm makes predictions and is corrected by the operator and this process continues until the algorithm achieves a high level of accuracy/performance.
   ### Regression and Classification are two two categories in supervised machine learning.
   #### Regression Algorithms:
       1. Simple Linear Regression

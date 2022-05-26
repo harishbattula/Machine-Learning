@@ -20,7 +20,7 @@
   3. Reinforcement Learning.
 ## Supervised ML:
   ##### In supervised learning, the machine is taught by example. The operator provides the machine learning algorithm with a known dataset that includes desired inputs and outputs, and the algorithm must find a method to determine how to arrive at those inputs and outputs. While the operator knows the correct answers to the    problem, the algorithm identifies patterns in data, learns from observations and makes predictions. The algorithm makes predictions and is corrected by the operator and this process continues until the algorithm achieves a high level of accuracy/performance.
-  ##### Regression and Classification are two two categories in supervised machine learning.
+  ##### Regression and Classification are two categories in supervised machine learning.
   ##### Regression Algorithms:
       1. Simple Linear Regression
       2. Multiple Linear Regression
